@@ -1,7 +1,7 @@
 # Modeling Conceptual Understanding 
 Code for the paper: 
 
-**Modeling Conceptual Understanding in Image Reference Games**
+**Modeling Conceptual Understanding in Image Reference Games**\
 Rodolfo Corona, Stephan Alaniz, Zeynep Akata
 
 
