@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import sys
+
 
 def fc_layer(in_dim, out_dim, n_layers, compression_ratio, \
              mid_activation=nn.ELU, out_activation=None, batch_norm=True):

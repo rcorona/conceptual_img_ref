@@ -1,14 +1,12 @@
 from sklearn.cluster import MiniBatchKMeans, DBSCAN
 from pyitlib import discrete_random_variable as drv
-import scipy
-from collections import Counter
 import pickle
 import os
 import argparse
-import sys
 import json
 import numpy as np
 import csv
+
 
 def parse_args(): 
 

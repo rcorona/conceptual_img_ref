@@ -1,19 +1,15 @@
-from subprocess import Popen, PIPE
+from subprocess import Popen
 import argparse
 import os
 import numpy as np
-import sys
 import itertools
 from glob import glob
 import matplotlib.pyplot as plt
-from PIL import Image
-import torch
 import json
 from multiprocessing import Process, Queue
 
 from experiments.visualize import read_csv
-from experiments.image_reference import name_experiment
-from experiments.image_reference import parse_args as parse_experiment_args
+
 
 def parse_args(): 
 

@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import sys
 import numpy as np
 from torch.distributions.bernoulli import Bernoulli
 from torch.distributions.categorical import Categorical
+
 
 class Speaker(nn.Module):
 

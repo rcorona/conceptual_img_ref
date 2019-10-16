@@ -1,17 +1,11 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import DataLoader, Dataset
 from torch.distributions.bernoulli import Bernoulli
 from torch.distributions.normal import Normal
 import numpy as np
-import sys
-import matplotlib.pyplot as plt
 import pickle
 
-from models.utils import *
-from datasets.cub_dataset import CUBDataset
-                
+
 class ListenerPopulation(nn.Module):
 
     def __init__(self, n_clusters, n_attributes, n_corrupt, n_agents,

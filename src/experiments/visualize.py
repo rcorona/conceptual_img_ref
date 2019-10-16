@@ -8,8 +8,7 @@ import numpy as np
 import glob
 import shlex
 import pickle
-import seaborn as sn
-import pandas as pd
+
 
 def read_csv(path):
 

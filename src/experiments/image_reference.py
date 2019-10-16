@@ -1,25 +1,19 @@
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 import numpy as np
 from torch.utils.data import DataLoader, Dataset
-from torch.distributions.bernoulli import Bernoulli
-import sys
 import csv
 import pickle
 import os
 import argparse
 import json
 import subprocess
-import matplotlib.pyplot as plt
 
-from models.utils import *
 from models.listener_population import ListenerPopulation
 from models.speaker import Speaker
 from models.base_speaker import ReactiveSpeaker, ReactiveMaxSpeaker, RandomSpeaker
 
 from datasets.preprocessed_img_dataset import PreprocessedDataset
-from datasets.cub_attr_types import extract_types
+
 
 class ImgRefDataset(Dataset):
 
