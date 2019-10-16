@@ -17,9 +17,10 @@ class RandomSpeaker(nn.Module):
 
     def step(self, agent_embedding, agent_cell, features, rewards, eval_true):
         # Select attribute to send to listener.
-        attrs = torch.LongTensor(features.shape[0]).random_(0, features.shape[1]).view(-1, 1)
+        attrs = torch.LongTensor(features.shape[0]).random_(
+            0, features.shape[1]).view(-1, 1)
 
-        # Compute reward for listener's guess. 
+        # Compute reward for listener's guess.
         guess_reward = rewards.gather(1, attrs)
 
         # Dummy results
@@ -27,18 +28,19 @@ class RandomSpeaker(nn.Module):
 
         return Q, attrs, guess_reward, 0, (0, 0)
 
+
 class ReactiveSpeaker(nn.Module):
     def __init__(self, n_features):
         super().__init__()
         self._n_features = n_features
 
     def _update_choices(self, mask=None):
-        try: 
+        try:
             new_choice = torch.multinomial(self.seen_attributes, 1)
         except:
             print(self.seen_attributes)
             sys.exit()
-            
+
         if mask is None:
             self.curr_choice = new_choice
         else:
@@ -46,13 +48,14 @@ class ReactiveSpeaker(nn.Module):
         batch_sz = self.seen_attributes.size(0)
         self.seen_attributes[range(batch_sz), self.curr_choice.squeeze()] = 0
 
-        # Re-initialize any game sequences which might have exhausted all attributes. 
+        # Re-initialize any game sequences which might have exhausted all attributes.
         exhausted = (self.seen_attributes.sum(1) == 0.0).nonzero()
         if exhausted.size(0) > 0:
             e_idx = exhausted.squeeze()
 
-            new_seen = torch.ones((self.seen_attributes.size(0), self._n_features))
-            self.seen_attributes[e_idx,:] = new_seen[e_idx,:]
+            new_seen = torch.ones(
+                (self.seen_attributes.size(0), self._n_features))
+            self.seen_attributes[e_idx, :] = new_seen[e_idx, :]
 
     def init(self, batch_sz):
         self.seen_attributes = torch.ones((batch_sz, self._n_features))
@@ -67,7 +70,7 @@ class ReactiveSpeaker(nn.Module):
         # Select attribute to send to listener.
         attrs = self.curr_choice
 
-        # Compute reward for listener's guess. 
+        # Compute reward for listener's guess.
         guess_reward = rewards.gather(1, attrs)
 
         # Update choice
@@ -88,10 +91,12 @@ class ReactiveMaxSpeaker(ReactiveSpeaker):
 
     def _update_choices(self, mask=None):
         if mask is None:
-            self.curr_choice = (self._features * self.seen_attributes).argmax(dim=1, keepdim=True)
+            self.curr_choice = (
+                self._features * self.seen_attributes).argmax(dim=1, keepdim=True)
         else:
             batch_sz = self.seen_attributes.size(0)
-            self.seen_attributes[torch.arange(batch_sz)[mask.squeeze()], self.curr_choice[mask]] = 0
+            self.seen_attributes[torch.arange(
+                batch_sz)[mask.squeeze()], self.curr_choice[mask]] = 0
 
     def step(self, agent_embedding, agent_cell, features, rewards, eval_true):
         self._features = features.abs()

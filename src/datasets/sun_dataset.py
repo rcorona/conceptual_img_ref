@@ -34,7 +34,7 @@ class SUNDataset(Dataset):
         self._data['train'] = self._data['train'][n_val:]
 
     def __len__(self):
-        #return 10
+        # return 10
         return len(self._data[self._dtype])
 
     def __getitem__(self, idx):
@@ -54,7 +54,7 @@ class SUNDataset(Dataset):
 
         # Format path for image reference game.
         img_path = '/'.join(img_path.split('/')[1:])
-        
+
         return {'img': img, 'class_label': class_label, 'img_path': img_path}
 
     def build_dataset(self):
@@ -62,7 +62,7 @@ class SUNDataset(Dataset):
         dataset_ids = {'1': 'train', '0': 'test'}
         self._data = {'train': [], 'test': []}
         with open(os.path.join(self._parent_dir,
-                  'train_test_classification_split.txt'), 'r') as f:
+                               'train_test_classification_split.txt'), 'r') as f:
             for line in f:
                 # Image data line
                 # 0: image_id
@@ -75,12 +75,12 @@ class SUNDataset(Dataset):
         # Read in class names.
         class_names = [name.split() for name in
                        open(os.path.join(self._parent_dir,
-                            'classes.txt'), 'r')]
+                                         'classes.txt'), 'r')]
         self._class_names = {int(c_id): name for c_id, name in class_names}
 
         # Read in attribute matrix.
         self._attribute_mat = np.loadtxt(os.path.join(self._parent_dir,
-                                         'attributes_continuous.npy'))
-        
+                                                      'attributes_continuous.npy'))
+
     def attribute_mat(self):
         return self._attribute_mat

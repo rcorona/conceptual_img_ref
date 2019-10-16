@@ -8,9 +8,10 @@ import numpy as np
 import csv
 
 
-def parse_args(): 
+def parse_args():
 
-    parser = argparse.ArgumentParser(description='Run random search of hyperparameters.')
+    parser = argparse.ArgumentParser(
+        description='Run random search of hyperparameters.')
 
     parser.add_argument('-results_dir', default='.', type=str,
                         help='Parent directory where results should be stored.')
@@ -20,8 +21,9 @@ def parse_args():
                         help='Folder to store figures in.')
     parser.add_argument('-n_points', default=10000, type=int,
                         help='Number of embeddings to use for clustering.')
-    
+
     return parser.parse_args()
+
 
 def cluster(args):
 
@@ -30,7 +32,7 @@ def cluster(args):
     variant = json.load(open(variant_path, 'r'))
 
     n_clusters = variant['n_pops']
-    
+
     # First load agend embeddings on which to perform clustering.
     embeddings_path = os.path.join(args.results_dir, 'agent_embeddings.pkl')
     embeddings = pickle.load(open(embeddings_path, 'rb'))
@@ -42,39 +44,42 @@ def cluster(args):
 
         agent_embeddings = embeddings[idx]['embeddings'][:args.n_points]
         labels = embeddings[idx]['labels'][:args.n_points]
-        
-        # Run k-means to get unsupervised cluster labels. 
+
+        # Run k-means to get unsupervised cluster labels.
         kmeans = MiniBatchKMeans(n_clusters=n_clusters).fit(agent_embeddings)
         km_predict = kmeans.predict(agent_embeddings)
 
         # Random baseline.
         rand_predict = np.random.choice(n_clusters, size=args.n_points)
-        
-        # Do the same with DBSCAN. 
+
+        # Do the same with DBSCAN.
         db_clustering = DBSCAN(eps=0.05).fit(agent_embeddings)
         db_predict = db_clustering.labels_
 
         iv_kmeans = drv.information_variation(km_predict, labels)
         iv_rand = drv.information_variation(rand_predict, labels)
         iv_db = drv.information_variation(db_predict, labels)
-        print('Idx: {} IV kmeans: {} IV db: {} IV random: {}'.format(idx, iv_kmeans, iv_db, iv_rand))
+        print('Idx: {} IV kmeans: {} IV db: {} IV random: {}'.format(
+            idx, iv_kmeans, iv_db, iv_rand))
 
         # Keep track of results so we can save them.
         results[idx]['kmeans'] = iv_kmeans
         results[idx]['db'] = iv_db
         results[idx]['rand'] = iv_rand
-        
+
     # Store results in a file.
     csv_path = os.path.join(args.results_dir, 'cluster_results.csv')
     writer = csv.writer(open(csv_path, 'w'))
     writer.writerow(['idx', 'kmeans', 'db', 'rand'])
 
     for idx in results:
-        row = [idx, results[idx]['kmeans'], results[idx]['db'], results[idx]['rand']]
+        row = [idx, results[idx]['kmeans'],
+               results[idx]['db'], results[idx]['rand']]
         writer.writerow(row)
 
+
 if __name__ == '__main__':
-    
+
     args = parse_args()
 
     if args.procedure == 'cluster':

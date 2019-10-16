@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 
-def fc_layer(in_dim, out_dim, n_layers, compression_ratio, \
+def fc_layer(in_dim, out_dim, n_layers, compression_ratio,
              mid_activation=nn.ELU, out_activation=None, batch_norm=True):
     """
     in_dim - Dimensionality of input. 
@@ -17,13 +17,13 @@ def fc_layer(in_dim, out_dim, n_layers, compression_ratio, \
     layers = []
     in_dim = in_dim
 
-    # Add intermediate layers. 
+    # Add intermediate layers.
     for _ in range(n_layers - 1):
 
-        # Layer output dimensionality determined by ratio. 
+        # Layer output dimensionality determined by ratio.
         mid_dim = int(in_dim * compression_ratio)
 
-        # Add linear layer with optional batch norm and activation. 
+        # Add linear layer with optional batch norm and activation.
         layers.append(nn.Linear(in_dim, mid_dim))
 
         if batch_norm:
@@ -43,6 +43,7 @@ def fc_layer(in_dim, out_dim, n_layers, compression_ratio, \
 
     return nn.Sequential(*layers)
 
+
 def topk(scores, labels, k, float_type=torch.FloatTensor):
     """
     Method for computing top-k accuracy. 
@@ -52,30 +53,32 @@ def topk(scores, labels, k, float_type=torch.FloatTensor):
     predictions were correct and 0's otherwise. 
     """
 
-    # First get top-k for each predictions. 
+    # First get top-k for each predictions.
     _, top_k = scores.topk(k, 1)
 
     # Repeat correct label so we can do comparison.
     labels = labels.view(-1, 1).repeat(1, k)
 
-    # Compute which rows have a correct answer in top-k as well as avg. 
+    # Compute which rows have a correct answer in top-k as well as avg.
     correct = torch.sum(top_k.eq(labels).type(float_type), 1)
 
     return correct
 
+
 def init_params(model):
 
     params = []
-    
+
     for p in model.parameters():
-        if len(p.shape) >= 2: 
+        if len(p.shape) >= 2:
             nn.init.xavier_uniform_(p)
-        else: 
+        else:
             nn.init.normal_(p)
-            
+
         params.append(p)
 
     return params
+
 
 class Squeeze(nn.Module):
     def forward(self, input):
