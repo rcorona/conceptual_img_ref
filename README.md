@@ -14,11 +14,27 @@ Our experiments on three benchmark image/attribute datasets suggest that our lea
 
 ## Instructions
 
+### Installation
+
+All Python requirements can be found in the `environment.yml` file and can be easily installed using a [conda](https://docs.conda.io/) environment.
+
+1. Clone the repository
+```
+git clone https://github.com/rcorona/conceptual_img_ref.git
+cd conceptual_img_ref
+```
+2. Install python dependencies into a new conda environment
+```
+conda env create -f environment.yml
+conda activate imgref
+```
+3. You're all set!
+
 ### Training 
 
-To run the training procedure for the experiments reported in the paper, you may run the following command: 
+To run the training procedure for the experiments reported in the paper, you may run the following command from the `src` directory:
 
-```bash
+```
 python -m experiments.batch_experiments -results_dir path_to_results/seed_n/ -procedure batch -experiments 1,2,4 -data_dir path_to_preprocessed_datasets/ -n_workers m -seed n
 ```
 
@@ -32,9 +48,9 @@ The arguments are as follows:
 
 ### Testing 
 
-To run the testing procedure for the experiments reported you may run the following command: 
+To run the testing procedure for the experiments reported you may run the following command from the `src` directory:
 
-```bash 
+```
 python -m experiments.batch_experiments -results_dir path_to_results/seed_n/ -procedure test -data_dir preprocessed_datasets/ -seed n -experiments 1,2,4,5
 ```
 
@@ -42,12 +58,10 @@ Here, experiment 5 pertains to the agent clustering experiment presented in Figu
 
 ### Visualization 
 
-To generate the plots reported, the following command should be used: 
+To generate the plots reported, the following command should be used from within the `src` directory:
 
-```bash
+```
 python -m experiments.batch_experiments -results_dir path_to_results/ -procedure plot -data_dir -figure_dir path_to_figures/ -experiments 1,2,4,5
 ```
 
 NOTE: ```-results_dir``` here should point to the top level directory where each seed's results are stored, this is because the visualization script makes plots using the results from each seed's directory. ``-figure_dir`` is the path to the directory where you wish the figures to be stored. 
-
-This repo is under construction, installation instructions will be up soon!
