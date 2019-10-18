@@ -28,7 +28,7 @@ def parse_args():
                         help='Field to plot on y-axis')
     parser.add_argument('-experiments', default='1', type=str,
                         help='Experiments to batch.')
-    parser.add_argument('-data_dir', default='.', type=str,
+    parser.add_argument('-data_dir', default='../preprocessed_datasets/', type=str,
                         help='Path to preprocessed image datasets.')
     parser.add_argument('-n_workers', default=5, type=int,
                         help='Number of experiments to be running at once.')
