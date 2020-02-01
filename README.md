@@ -29,7 +29,13 @@ cd conceptual_img_ref
 conda env create -f environment.yml
 conda activate imgref
 ```
-4. You're all set!
+4. Download preprocessed ALE features for each dataset, used in our experiments, with git-lfs. 
+```
+git lfs install 
+git lfs fetch
+git lfs pull 
+```
+5. You're all set!
 
 ### Training 
 
